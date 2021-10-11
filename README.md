@@ -12,6 +12,6 @@ You will have to use a MySQL database
 
 Script will be executed by using the below format:
 
-## python dbupdate.py -db_script_di /d/KeepLearning/Learning/dbsqlscripts  -db_username prem -db_password prem@123 -db_host 127.0.0.1 -db_name versiondb
+## python dbupdate.py -db_script_di <directory with .sql scripts>  -db_username <username for the DB> -db_password <DB password> -db_host  <DB host>  -db_name <DB name>
 
 
