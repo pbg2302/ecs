@@ -24,10 +24,6 @@ def main():
     db_name = args.db_name
     db_script_dir = args.db_script_dir
 
-    
-    retrieve_db_verion(db_username,db_password,db_host,db_name)
-    list_sqlscript_versions(db_username,db_password,db_host,db_name,db_script_dir)
-    list_sql_scripts(db_username,db_password,db_host,db_name,db_script_dir)
     run_sql_scripts(db_username,db_password,db_host,db_name,db_script_dir)
     update_version_table(db_username,db_password,db_host,db_name,db_script_dir)
     
@@ -100,6 +96,8 @@ def update_version_table(db_username,db_password,db_host,db_name,db_script_dir):
     cursor.execute(("""INSERT INTO versiontable
                   VALUES (%s)""" % (higest_script_version)))
     db.commit()
+    cursor.close()
+    db.close()
     print("Record updated successfully into versiontable table")
 
 if __name__ == "__main__":
