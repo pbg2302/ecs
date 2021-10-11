@@ -25,7 +25,7 @@ def main():
     db_script_dir = args.db_script_dir
 
     run_sql_scripts(db_username,db_password,db_host,db_name,db_script_dir)
-    update_version_table(db_username,db_password,db_host,db_name,db_script_dir)
+    
     
 def connect_to_database(db_username,db_password,db_host,db_name):
     cnx = mysql.connector.connect(user=db_username,
@@ -76,25 +76,25 @@ def run_sql_scripts(db_username,db_password,db_host,db_name,db_script_dir):
                     try:
                         db = connect_to_database(db_username,db_password,db_host,db_name)
                         cursor = db.cursor()
-                        with open(sql_script,'r') as inserts:
+                        t = db_script_dir+'/'+sql_script
+                        with open(t,'r') as inserts:
                             query = inserts.read()
                         cursor.execute(query)
                         db.commit()
                         cursor.close()
                         db.close()
                         print("Data inserted successfully into the table")
+                        update_version_table(db_username,db_password,db_host,db_name,script_version)
                     except mysql.connector.Error as error:
                         print("query failed {}".format(error))
                     
 
 
-def update_version_table(db_username,db_password,db_host,db_name,db_script_dir):
-    script_versions = list_sqlscript_versions(db_username,db_password,db_host,db_name,db_script_dir)
-    higest_script_version = max(script_versions)
+def update_version_table(db_username,db_password,db_host,db_name,script_version):
     db = connect_to_database(db_username,db_password,db_host,db_name)
     cursor = db.cursor()
     cursor.execute(("""INSERT INTO versiontable
-                  VALUES (%s)""" % (higest_script_version)))
+                  VALUES (%s)""" % (script_version)))
     db.commit()
     cursor.close()
     db.close()
